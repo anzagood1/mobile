@@ -103,5 +103,4 @@ const ResumenDeClases: React.FC<Props> = ({ courseData }) => {
     </div>
   );
 };
-
 export default ResumenDeClases;

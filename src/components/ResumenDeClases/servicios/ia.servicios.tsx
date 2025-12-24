@@ -1,46 +1,54 @@
-import axios from 'axios';
+import { GoogleGenAI } from '@google/genai';
 import { CourseData, AISummaryResponse } from '../ResumenDeClases.types';
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-const API_URL = import.meta.env.VITE_GEMINI_API_URL;
 
 export const fetchClassSummary = async (data: CourseData): Promise<AISummaryResponse> => {
   try {
-    const response = await axios.post(`${API_URL}?key=${API_KEY}`, {
-      contents: [{
-        parts: [{
-          text: `Eres un asistente académico experto. Analiza: "${data.transcription}".
-          Genera un JSON estrictamente con esta estructura:
-          {
-            "summaryPoints": ["punto 1", "punto 2", "punto 3"],
-            "recommendedBooks": [
-              {"title": "título", "author": "autor", "reason": "razón"}
-            ]
-          }
-          No incluyas explicaciones, solo el objeto JSON.`
-        }]
-      }]
+    // Inicializar el cliente de Google Gen AI
+    const genAI = new GoogleGenAI(API_KEY);
+    const model = 'gemini-2.5-flash';
+
+    const prompt = `Eres un asistente académico experto. Analiza la siguiente transcripción de clase sobre "${data.topic}" (nivel: ${data.level}):
+
+"${data.transcription}"
+
+Genera un JSON estrictamente con esta estructura:
+{
+  "summaryPoints": ["punto 1", "punto 2", "punto 3"],
+  "recommendedBooks": [
+    {"title": "título", "author": "autor", "reason": "razón"}
+  ]
+}
+
+No incluyas explicaciones, solo el objeto JSON.`;
+
+    // Generar contenido usando el SDK
+    const response = await genAI.models.generateContent({
+      model: model,
+      contents: prompt, 
     });
+    let rawText = response.text;
 
-    // 1. Extraer el texto bruto de la respuesta de Gemini
-    let rawText = response.data.candidates[0].content.parts[0].text;
+    if (!rawText) {
+      throw new Error('No se recibió respuesta del modelo de IA');
+    }
 
-    // 2. Limpieza Pro: Eliminar bloques de código Markdown si existen (```json ... ```)
+    // Limpieza: Eliminar bloques de código Markdown si existen (```json ... ```)
     const jsonMatch = rawText.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
       rawText = jsonMatch[0];
     }
 
-    // 3. Parsear y validar
+    // Parsear y validar
     const parsedData: AISummaryResponse = JSON.parse(rawText);
     
-    // Verificación en consola para debugging
-    console.log('Datos procesados con éxito:', parsedData);
+    console.log('✅ Resumen generado con éxito:', parsedData);
     
     return parsedData;
 
   } catch (error) {
-    console.error('Error detallado en el servicio de IA:', error);
-    throw error; // Re-lanzar para que React Query lo detecte
+    console.error('❌ Error en el servicio de IA:', error);
+    throw error;
   }
 };

@@ -10,7 +10,6 @@ const Home: React.FC = () => {
   // Datos de ejemplo que normalmente vendrían de tu lógica de grabación o selección de curso
   const [courseInfo] = useState<CourseData>({
     topic: 'Arquitectura de Microservicios',
-    level: 'Advanced',
     transcription: 'En esta clase hablamos sobre patrones de diseño, comunicación asíncrona mediante colas de mensajes como RabbitMQ y la importancia de la consistencia eventual en sistemas distribuidos.'
   });
 

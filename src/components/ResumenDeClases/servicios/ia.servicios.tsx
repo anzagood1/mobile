@@ -3,13 +3,14 @@ import { CourseData, AISummaryResponse } from '../ResumenDeClases.types';
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
+
 export const fetchClassSummary = async (data: CourseData): Promise<AISummaryResponse> => {
   try {
     // Inicializar el cliente de Google Gen AI
-    const genAI = new GoogleGenAI(API_KEY);
+    const genAI = new GoogleGenAI({apiKey: API_KEY});
     const model = 'gemini-2.5-flash';
 
-    const prompt = `Eres un asistente académico experto. Analiza la siguiente transcripción de clase sobre "${data.topic}" (nivel: ${data.level}):
+    const prompt = `Eres un asistente académico experto. Analiza la siguiente transcripción de clase sobre "${data.topic}":
 
 "${data.transcription}"
 

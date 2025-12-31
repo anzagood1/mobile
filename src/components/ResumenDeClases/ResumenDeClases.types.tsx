@@ -1,7 +1,6 @@
 export interface CourseData {
   transcription: string;
   topic: string;
-  level: 'Beginner' | 'Intermediate' | 'Advanced';
 }
 
 export interface BookRecommendation {

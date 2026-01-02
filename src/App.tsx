@@ -29,6 +29,7 @@ import './theme/variables.css';
 
 /* Pages & Components */
 import Home from './pages/Home';
+import ResumenPage from './pages/ResumenPage';
 
 // Inicialización de la configuración de Ionic
 setupIonicReact({
@@ -52,11 +53,14 @@ const App: React.FC = () => (
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
+          <Route exact path="/">
+            <Redirect to="/home" />
+          </Route>
           <Route exact path="/home">
             <Home />
           </Route>
-          <Route exact path="/">
-            <Redirect to="/home" />
+          <Route exact path="/resumen">
+            <ResumenPage />
           </Route>
         </IonRouterOutlet>
       </IonReactRouter>

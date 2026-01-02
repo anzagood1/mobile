@@ -1,5 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
-import { CourseData, AISummaryResponse } from '../ResumenDeClases.types';
+import { CourseData, AISummaryResponse } from './ResumenDeClasesStructures';
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
@@ -12,11 +12,25 @@ export const fetchClassSummary = async (data: CourseData): Promise<AISummaryResp
 
     const prompt = `Eres un asistente académico experto. Analiza la siguiente transcripción de clase sobre "${data.topic}":
 
-"${data.transcription}"
+"${data.transcription}" Considera estos aspectos: 
+Resumen: 5 puntos relevantes, solo si "${data.resumen}" es true
+Cuestionario: 5 preguntas sencillas con 3 opciones múltiples, solo si "${data.cuestionario}" es true
+Lecturas: al menos 3 lecturas sugeridas, solo si "${data.lecturas}" es true
+Resumen Completo: Resumen, Cuestionario y lecturas, solo si "${data.resumenCompleto}" es true
+
+En los caso en los que no vas a generar algo, llena con '' todos los campos de esos datos.
 
 Genera un JSON estrictamente con esta estructura:
 {
-  "summaryPoints": ["punto 1", "punto 2", "punto 3"],
+  "summaryPoints": [
+    {"title": "punto", "detail": "punto explicado a detalle"}
+  ]
+  "quiz": [
+    {"question": "pregunta", 
+      "answer1": {"answer": "respuesta 1", "isCorrect": "true si es correcta/false si no es correcta"}, 
+      "answer2": {"answer": "respuesta 2", "isCorrect": "true si es correcta/false si no es correcta"}, 
+      "answer3": {"answer": "respuesta 3", "isCorrect": "true si es correcta/false si no es correcta"}}
+  ]
   "recommendedBooks": [
     {"title": "título", "author": "autor", "reason": "razón"}
   ]
@@ -44,12 +58,12 @@ No incluyas explicaciones, solo el objeto JSON.`;
     // Parsear y validar
     const parsedData: AISummaryResponse = JSON.parse(rawText);
     
-    console.log('✅ Resumen generado con éxito:', parsedData);
+    console.log('Resumen generado con éxito:', parsedData);
     
     return parsedData;
 
   } catch (error) {
-    console.error('❌ Error en el servicio de IA:', error);
+    console.error('Error en el servicio de IA:', error);
     throw error;
   }
 };

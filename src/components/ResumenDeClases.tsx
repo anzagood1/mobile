@@ -10,6 +10,7 @@ import { useQuery } from '@tanstack/react-query';
 // Importación de módulos externos
 import { CourseData } from './ResumenDeClasesStructures';
 import { fetchClassSummary } from './ia.servicios';
+import Cuestionario from './Cuestionario';
 
 interface Props {
   courseData: CourseData;
@@ -75,40 +76,10 @@ const ResumenDeClases: React.FC<Props> = ({ courseData }) => {
       )}
 
       <h3 className="ion-margin-top" style={{ fontWeight: '600' }}>Cuestionario</h3>
-      {isLoading ? (
-        <IonCard>
-          <IonCardContent>
-            <IonSkeletonText animated style={{ width: '90%', height: '16px' }} />
-            <IonSkeletonText animated style={{ width: '100%', height: '14px' }} />
-            <IonSkeletonText animated style={{ width: '95%', height: '14px' }} />
-          </IonCardContent>
-        </IonCard>
-      ) : (
-        data?.quiz.map((question, i) => (
-          <IonCard key={i} className="ion-margin-bottom">
-            <IonCardHeader>
-              <IonCardSubtitle>
-                <IonIcon icon={helpCircleOutline} /> {question.question}
-              </IonCardSubtitle>
-            </IonCardHeader>
-            <IonCardContent>
-                <IonRadio value="end">
-                  {question.answer1.answer}
-                </IonRadio>
-                <br/>
-                <IonRadio value="end">
-                  {question.answer2.answer}
-                </IonRadio>
-                <br/>
-                <IonRadio value="end">
-                  {question.answer3.answer}
-                </IonRadio>
-                <br/>
-            </IonCardContent>
-          </IonCard>
-        ))
-      )}
-
+      <Cuestionario
+        isLoading={isLoading}
+        quiz={data?.quiz}
+      />
 
       {/* Listado de Libros */}
       <h3 className="ion-margin-top" style={{ fontWeight: '600' }}>Lecturas Sugeridas</h3>

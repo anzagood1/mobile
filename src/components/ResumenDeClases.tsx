@@ -2,9 +2,9 @@ import React from 'react';
 import { 
   IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, 
   IonCardContent, IonList, IonItem, IonLabel, IonThumbnail, 
-  IonSkeletonText, IonBadge, IonNote, IonText, IonIcon, IonContent
+  IonSkeletonText, IonBadge, IonNote, IonText, IonIcon, IonContent, IonRadioGroup, IonRadio
 } from '@ionic/react';
-import { bookOutline, schoolOutline, alertCircleOutline } from 'ionicons/icons';
+import { bookOutline, schoolOutline, alertCircleOutline, helpCircleOutline} from 'ionicons/icons';
 import { useQuery } from '@tanstack/react-query';
 
 // Importación de módulos externos
@@ -44,12 +44,10 @@ const ResumenDeClases: React.FC<Props> = ({ courseData }) => {
         <IonText>
           <h2 style={{ margin: 0, fontWeight: 'bold' }}>{courseData.topic}</h2>
         </IonText>
-        <IonContent>
-          <h3>Conceptos Claves</h3>
-        </IonContent>
       </div>
 
       {/* Tarjetas de los puntos del resumen */}
+      <h3 className="ion-margin-top" style={{ fontWeight: '600' }}>Conceptos Claves</h3>
       {isLoading ? (
         <IonCard>
           <IonCardContent>
@@ -75,6 +73,42 @@ const ResumenDeClases: React.FC<Props> = ({ courseData }) => {
           </IonCard>
         ))
       )}
+
+      <h3 className="ion-margin-top" style={{ fontWeight: '600' }}>Cuestionario</h3>
+      {isLoading ? (
+        <IonCard>
+          <IonCardContent>
+            <IonSkeletonText animated style={{ width: '90%', height: '16px' }} />
+            <IonSkeletonText animated style={{ width: '100%', height: '14px' }} />
+            <IonSkeletonText animated style={{ width: '95%', height: '14px' }} />
+          </IonCardContent>
+        </IonCard>
+      ) : (
+        data?.quiz.map((question, i) => (
+          <IonCard key={i} className="ion-margin-bottom">
+            <IonCardHeader>
+              <IonCardSubtitle>
+                <IonIcon icon={helpCircleOutline} /> {question.question}
+              </IonCardSubtitle>
+            </IonCardHeader>
+            <IonCardContent>
+                <IonRadio value="end">
+                  {question.answer1.answer}
+                </IonRadio>
+                <br/>
+                <IonRadio value="end">
+                  {question.answer2.answer}
+                </IonRadio>
+                <br/>
+                <IonRadio value="end">
+                  {question.answer3.answer}
+                </IonRadio>
+                <br/>
+            </IonCardContent>
+          </IonCard>
+        ))
+      )}
+
 
       {/* Listado de Libros */}
       <h3 className="ion-margin-top" style={{ fontWeight: '600' }}>Lecturas Sugeridas</h3>

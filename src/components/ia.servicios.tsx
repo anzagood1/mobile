@@ -12,31 +12,24 @@ export const fetchClassSummary = async (data: CourseData): Promise<AISummaryResp
 
     const prompt = `Eres un asistente académico experto. Analiza la siguiente transcripción de clase sobre "${data.topic}":
 
-"${data.transcription}"
+"${data.transcription}" Considera estos aspectos: 
+Resumen: 5 puntos relevantes, solo si "${data.resumen}" es true
+Cuestionario: 5 preguntas sencillas con 3 opciones múltiples, solo si "${data.cuestionario}" es true
+Lecturas: al menos 3 lecturas sugeridas, solo si "${data.lecturas}" es true
+Resumen Completo: Resumen, Cuestionario y lecturas, solo si "${data.resumenCompleto}" es true
 
-Genera un JSON estrictamente con esta estructura, donde seleccionas 5 puntos relevantes, y al menos 3 lecturas:
+En los caso en los que no vas a generar algo, llena con '' todos los campos de esos datos.
+
+Genera un JSON estrictamente con esta estructura:
 {
   "summaryPoints": [
-  {
-    title: "punto 1",
-    detail: "punto 1 explicado a detalle"
-  },
-  {
-    title: "punto 2",
-    detail: "punto 2 explicado a detalle"
-  },
-  {
-    title: "punto 3",
-    detail: "punto 3 explicado a detalle"
-  },
-  {
-    title: "punto 4",
-    detail: "punto 4 explicado a detalle"
-  },
-  {
-    title: "punto 5",
-    detail: "punto 5 explicado a detalle"
-  },
+    {"title": "punto", "detail": "punto explicado a detalle"}
+  ]
+  "quiz": [
+    {"question": "pregunta", 
+      "answer1": {"answer": "respuesta 1", "isCorrect": "true si es correcta/false si no es correcta"}, 
+      "answer2": {"answer": "respuesta 2", "isCorrect": "true si es correcta/false si no es correcta"}, 
+      "answer3": {"answer": "respuesta 3", "isCorrect": "true si es correcta/false si no es correcta"}}
   ]
   "recommendedBooks": [
     {"title": "título", "author": "autor", "reason": "razón"}

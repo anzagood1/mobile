@@ -26,9 +26,10 @@ const Tema: React.FC = () => {
       setShowAlert(true);
       return;
     }
-    const courseData = { topic, transcription };
+    const courseData = { topic, transcription, resumenCompleto, resumen, cuestionario, lecturas};
 
     history.push('/resumen', courseData);
+
   };
 
   return (
@@ -82,16 +83,16 @@ const Tema: React.FC = () => {
           </IonCol>
           <IonCol size="4">
             <IonCheckbox 
-            disabled={resumenCompleto} 
-            checked={lecturas} onIonChange={e => setLecturas(e.detail.checked)}>
-              Lecturas Sugeridas
+            disabled={resumenCompleto}
+            checked={cuestionario} onIonChange={e => setCuestionario(e.detail.checked)}>
+              Cuestionario
             </IonCheckbox>
           </IonCol>
           <IonCol size="4">
             <IonCheckbox 
-            disabled={resumenCompleto}
-            checked={cuestionario} onIonChange={e => setCuestionario(e.detail.checked)}>
-              Cuestionario
+            disabled={resumenCompleto} 
+            checked={lecturas} onIonChange={e => setLecturas(e.detail.checked)}>
+              Lecturas Sugeridas
             </IonCheckbox>
           </IonCol>
         </IonRow>

@@ -1,5 +1,5 @@
 import { GoogleGenAI } from '@google/genai';
-import { CourseData, AISummaryResponse } from '../ResumenDeClases.types';
+import { CourseData, AISummaryResponse } from './ResumenDeClasesStructures';
 
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
@@ -14,9 +14,30 @@ export const fetchClassSummary = async (data: CourseData): Promise<AISummaryResp
 
 "${data.transcription}"
 
-Genera un JSON estrictamente con esta estructura:
+Genera un JSON estrictamente con esta estructura, donde seleccionas 5 puntos relevantes, y al menos 3 lecturas:
 {
-  "summaryPoints": ["punto 1", "punto 2", "punto 3"],
+  "summaryPoints": [
+  {
+    title: "punto 1",
+    detail: "punto 1 explicado a detalle"
+  },
+  {
+    title: "punto 2",
+    detail: "punto 2 explicado a detalle"
+  },
+  {
+    title: "punto 3",
+    detail: "punto 3 explicado a detalle"
+  },
+  {
+    title: "punto 4",
+    detail: "punto 4 explicado a detalle"
+  },
+  {
+    title: "punto 5",
+    detail: "punto 5 explicado a detalle"
+  },
+  ]
   "recommendedBooks": [
     {"title": "título", "author": "autor", "reason": "razón"}
   ]
@@ -44,12 +65,12 @@ No incluyas explicaciones, solo el objeto JSON.`;
     // Parsear y validar
     const parsedData: AISummaryResponse = JSON.parse(rawText);
     
-    console.log('✅ Resumen generado con éxito:', parsedData);
+    console.log('Resumen generado con éxito:', parsedData);
     
     return parsedData;
 
   } catch (error) {
-    console.error('❌ Error en el servicio de IA:', error);
+    console.error('Error en el servicio de IA:', error);
     throw error;
   }
 };

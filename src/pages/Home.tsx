@@ -3,15 +3,12 @@ import {
   IonContent, IonHeader, IonPage, IonTitle, IonToolbar, 
   IonButtons, IonMenuButton, IonRefresher, IonRefresherContent 
 } from '@ionic/react';
-import ResumenDeClases from '../components/ResumenDeClases/ResumenDeClases';
-import { CourseData } from '../components/ResumenDeClases/ResumenDeClases.types';
+import ResumenDeClases from '../components/ResumenDeClases';
+import Tema from '../components/Tema'
+import { CourseData } from '../components/ResumenDeClasesStructures';
 
 const Home: React.FC = () => {
   // Datos de ejemplo que normalmente vendrían de tu lógica de grabación o selección de curso
-  const [courseInfo] = useState<CourseData>({
-    topic: 'Arquitectura de Microservicios',
-    transcription: 'En esta clase hablamos sobre patrones de diseño, comunicación asíncrona mediante colas de mensajes como RabbitMQ y la importancia de la consistencia eventual en sistemas distribuidos.'
-  });
 
   const handleRefresh = (event: CustomEvent) => {
     // Lógica para recargar si fuera necesario
@@ -45,7 +42,7 @@ const Home: React.FC = () => {
         </IonRefresher>
 
         {/* Inyección del componente ClassSummarizer */}
-        <ResumenDeClases courseData={courseInfo} />
+        <Tema/>
         
       </IonContent>
     </IonPage>

@@ -2,14 +2,14 @@ import React from 'react';
 import { 
   IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, 
   IonCardContent, IonList, IonItem, IonLabel, IonThumbnail, 
-  IonSkeletonText, IonBadge, IonNote, IonText, IonIcon
+  IonSkeletonText, IonBadge, IonNote, IonText, IonIcon, IonContent
 } from '@ionic/react';
 import { bookOutline, schoolOutline, alertCircleOutline } from 'ionicons/icons';
 import { useQuery } from '@tanstack/react-query';
 
 // Importación de módulos externos
-import { CourseData } from './ResumenDeClases.types';
-import { fetchClassSummary } from './servicios/ia.servicios';
+import { CourseData } from './ResumenDeClasesStructures';
+import { fetchClassSummary } from './ia.servicios';
 
 interface Props {
   courseData: CourseData;
@@ -37,40 +37,44 @@ const ResumenDeClases: React.FC<Props> = ({ courseData }) => {
   }
 
   return (
+    
     <div className="ion-padding">
       {/* Header Informativo */}
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '16px' }}>
         <IonText>
           <h2 style={{ margin: 0, fontWeight: 'bold' }}>{courseData.topic}</h2>
         </IonText>
-        <IonBadge color={courseData.level === 'Advanced' ? 'tertiary' : 'primary'}>
-          {courseData.level}
-        </IonBadge>
+        <IonContent>
+          <h3>Conceptos Claves</h3>
+        </IonContent>
       </div>
 
-      {/* Tarjeta del Resumen */}
-      <IonCard className="ion-no-margin">
-        <IonCardHeader>
-          <IonCardSubtitle>
-            <IonIcon icon={schoolOutline} /> Conceptos Clave
-          </IonCardSubtitle>
-        </IonCardHeader>
-        <IonCardContent>
-          {isLoading ? (
-            <>
-              <IonSkeletonText animated style={{ width: '100%', height: '14px' }} />
-              <IonSkeletonText animated style={{ width: '80%', height: '14px' }} />
-              <IonSkeletonText animated style={{ width: '60%', height: '14px' }} />
-            </>
-          ) : (
-            <ul style={{ paddingLeft: '16px', margin: 0 }}>
-              {data?.summaryPoints.map((point, i) => (
-                <li key={i} style={{ marginBottom: '8px' }}>{point}</li>
-              ))}
-            </ul>
-          )}
-        </IonCardContent>
-      </IonCard>
+      {/* Tarjetas de los puntos del resumen */}
+      {isLoading ? (
+        <IonCard>
+          <IonCardContent>
+            <IonSkeletonText animated style={{ width: '90%', height: '16px' }} />
+            <IonSkeletonText animated style={{ width: '100%', height: '14px' }} />
+            <IonSkeletonText animated style={{ width: '95%', height: '14px' }} />
+          </IonCardContent>
+        </IonCard>
+      ) : (
+        data?.summaryPoints.map((point, i) => (
+          <IonCard key={i} className="ion-margin-bottom">
+            <IonCardHeader>
+              <IonCardSubtitle>
+                <IonIcon icon={schoolOutline} /> {point.title}
+              </IonCardSubtitle>
+            </IonCardHeader>
+
+            <IonCardContent>
+              <IonText>
+                {point.detail}
+              </IonText>
+            </IonCardContent>
+          </IonCard>
+        ))
+      )}
 
       {/* Listado de Libros */}
       <h3 className="ion-margin-top" style={{ fontWeight: '600' }}>Lecturas Sugeridas</h3>

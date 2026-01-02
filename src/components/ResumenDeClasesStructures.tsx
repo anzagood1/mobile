@@ -10,7 +10,12 @@ export interface BookRecommendation {
   thumbnailUrl?: string;
 }
 
+export interface SummaryPoint {
+  title: string;
+  detail: string;
+}
+
 export interface AISummaryResponse {
-  summaryPoints: string[];
+  summaryPoints: SummaryPoint[];
   recommendedBooks: BookRecommendation[];
 }

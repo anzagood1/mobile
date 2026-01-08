@@ -21,7 +21,7 @@ export interface SummaryPoint {
 
 export interface Answer{
   answer: string;
-  isCorrect: boolean;
+  isCorrect: string;
 }
 
 export interface Question{

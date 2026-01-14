@@ -86,7 +86,7 @@ const Tema: React.FC = () => {
             expand="block"
             fill="solid"
             onClick={generarResumen}
-            disabled={!topic && !transcription}>
+            disabled={(!resumenCompleto && !resumen && !lecturas && !cuestionario)}>
             Generar resumen
       </IonButton>
 
@@ -97,7 +97,7 @@ const Tema: React.FC = () => {
             <IonCheckbox 
             disabled={resumen || lecturas || cuestionario} 
             checked={resumenCompleto} onIonChange={(e) => setResumenCompleto(e.detail.checked)}>
-                Resumen, Lecturas Sugeridas, Cuestionario (Por Defecto)
+                Todos (Por Defecto)
             </IonCheckbox>
           </IonCol>
         </IonRow>
@@ -107,8 +107,10 @@ const Tema: React.FC = () => {
             disabled={resumenCompleto} 
             checked={resumen} onIonChange={e => setResumen(e.detail.checked)}>
               Resumen
-            </IonCheckbox>
+            </IonCheckbox>   
           </IonCol>
+        </IonRow>
+        <IonRow>
           <IonCol size="4">
             <IonCheckbox 
             disabled={resumenCompleto}
@@ -116,6 +118,8 @@ const Tema: React.FC = () => {
               Cuestionario
             </IonCheckbox>
           </IonCol>
+        </IonRow>
+        <IonRow>
           <IonCol size="4">
             <IonCheckbox 
             disabled={resumenCompleto} 

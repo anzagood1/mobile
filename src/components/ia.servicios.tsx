@@ -1,7 +1,7 @@
 import { GoogleGenAI } from '@google/genai';
 import { CourseData, AISummaryResponse } from './ResumenDeClasesStructures';
 
-const API_KEY = "AIzaSyD1zxeqPOqYXSxtfEC9QDyKjhX3m9jA3YM";
+const API_KEY = "AIzaSyBxn8t9HzIhCcLWj-s_hx4eexKkVqZjJEI";
 
 const CACHE_PREFIX = 'aiSummaryCache:';
 

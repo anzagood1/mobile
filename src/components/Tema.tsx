@@ -21,12 +21,32 @@ const Tema: React.FC = () => {
   const [showAlert, setShowAlert] = useState(false);
   const history = useHistory();
 
+  const limpiarCampos = () => {
+    setTopic('');
+    setTranscription('');
+  };
+
   const generarResumen = () => {
     if (!topic || topic.trim() === '') {
       setShowAlert(true);
       return;
     }
     const courseData = { topic, transcription, resumenCompleto, resumen, cuestionario, lecturas};
+    // Guardar en historial local
+    try {
+      const STORAGE_KEY = 'resumenHistorial';
+      const raw = localStorage.getItem(STORAGE_KEY);
+      const parsed = raw ? JSON.parse(raw) : [];
+      const entry = {
+        id: `${Date.now()}`,
+        date: new Date().toISOString(),
+        courseData
+      };
+      const updated = Array.isArray(parsed) ? [...parsed, entry] : [entry];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    } catch (e) {
+      // Ignorar errores de almacenamiento para no bloquear navegación
+    }
 
     history.push('/resumen', courseData);
 
@@ -52,16 +72,24 @@ const Tema: React.FC = () => {
             value={transcription}
             onIonChange={(e) => setTranscription(e.detail.value ?? '')}
           />
+                <IonButton 
+            expand="block"
+            fill="clear"
+            onClick={limpiarCampos}
+            disabled={!topic && !transcription}>
+            Limpiar campos
+      </IonButton>
         </IonCardContent>
       </IonCard>
 
       <IonButton 
-      className="ion-padding" 
-      onClick={generarResumen} 
-      disabled={(!resumenCompleto && !resumen && !lecturas && !cuestionario)}
-      >
-        Generar resumen
+            expand="block"
+            fill="solid"
+            onClick={generarResumen}
+            disabled={!topic && !transcription}>
+            Generar resumen
       </IonButton>
+
       
       <IonGrid className="ion-padding">
         <IonRow>

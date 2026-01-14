@@ -1,0 +1,29 @@
+ion-content {
+	--background: #f7f7f9;
+}
+
+ion-toolbar {
+	--background: #ffffff;
+	--color: #111827;
+	border-bottom: 1px solid #e5e7eb;
+}
+
+ion-title {
+	font-weight: 600;
+	letter-spacing: 0.2px;
+}
+
+ion-card {
+	border: 1px solid #e5e7eb;
+	box-shadow: none;
+	border-radius: 12px;
+}
+
+ion-button {
+	--border-radius: 10px;
+	--box-shadow: none;
+}
+
+ion-item {
+	--border-color: #e5e7eb;
+}

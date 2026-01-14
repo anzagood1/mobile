@@ -3,11 +3,13 @@ import {
   IonHeader,
   IonToolbar,
   IonTitle,
-  IonContent
+  IonContent,
+  IonButton
 } from '@ionic/react';
 import { useLocation } from 'react-router';
 import ResumenDeClases from '../components/ResumenDeClases';
 import { CourseData } from '../components/ResumenDeClasesStructures';
+import "./ResumenPage.css";
 
 const ResumenPage: React.FC = () => {
   const location = useLocation();
@@ -18,6 +20,9 @@ const ResumenPage: React.FC = () => {
       <IonPage>
         <IonContent className="ion-padding">
           No hay datos para mostrar
+          <IonButton className="ion-margin-top" expand="block" routerLink="/" color="medium">
+            Ir a Home
+          </IonButton>
         </IonContent>
       </IonPage>
     );
@@ -33,6 +38,9 @@ const ResumenPage: React.FC = () => {
 
       <IonContent>
         <ResumenDeClases courseData={courseData} />
+        <IonButton className="ion-padding" expand="block" routerLink="/" color="medium">
+          Ir a Home
+        </IonButton>
       </IonContent>
     </IonPage>
   );

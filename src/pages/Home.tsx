@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import { 
   IonContent, IonHeader, IonPage, IonTitle, IonToolbar, 
-  IonButtons, IonMenuButton, IonRefresher, IonRefresherContent 
+  IonButtons, IonMenuButton, IonRefresher, IonRefresherContent,
+  useIonViewWillEnter
 } from '@ionic/react';
-import ResumenDeClases from '../components/ResumenDeClases';
 import Tema from '../components/Tema'
+import Historial from '../components/Historial'
 import { CourseData } from '../components/ResumenDeClasesStructures';
+import "./Home.css";
 
 const Home: React.FC = () => {
   // Datos de ejemplo que normalmente vendrían de tu lógica de grabación o selección de curso
+  const [reloadKey, setReloadKey] = useState(0);
 
   const handleRefresh = (event: CustomEvent) => {
     // Lógica para recargar si fuera necesario
@@ -16,6 +19,11 @@ const Home: React.FC = () => {
       event.detail.complete();
     }, 2000);
   };
+
+  // Al volver a esta vista, forzamos un remount ligero del historial
+  useIonViewWillEnter(() => {
+    setReloadKey((k) => k + 1);
+  });
 
   return (
     <IonPage>
@@ -43,6 +51,8 @@ const Home: React.FC = () => {
 
         {/* Inyección del componente ClassSummarizer */}
         <Tema/>
+        {/* Historial de resúmenes generados */}
+        <Historial key={reloadKey} />
         
       </IonContent>
     </IonPage>

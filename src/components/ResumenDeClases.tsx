@@ -19,7 +19,15 @@ interface Props {
 const ResumenDeClases: React.FC<Props> = ({ courseData }) => {
   // Gestión de estado asíncrono con React Query
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['classSummary', courseData.topic, courseData.transcription.length],
+    queryKey: [
+      'classSummary',
+      courseData.topic,
+      courseData.transcription,
+      courseData.resumenCompleto,
+      courseData.resumen,
+      courseData.cuestionario,
+      courseData.lecturas
+    ],
     queryFn: () => fetchClassSummary(courseData),
     retry: 1
   });
@@ -36,6 +44,11 @@ const ResumenDeClases: React.FC<Props> = ({ courseData }) => {
       </div>
     );
   }
+
+  // Normalización: algunas respuestas pueden venir como '' en lugar de arrays
+  const summaryPoints = Array.isArray(data?.summaryPoints) ? data!.summaryPoints : [];
+  const books = Array.isArray(data?.recommendedBooks) ? data!.recommendedBooks : [];
+  const quizList = Array.isArray(data?.quiz) ? data!.quiz : [];
 
   return (
     
@@ -58,7 +71,7 @@ const ResumenDeClases: React.FC<Props> = ({ courseData }) => {
           </IonCardContent>
         </IonCard>
       ) : (
-        data?.summaryPoints.map((point, i) => (
+        summaryPoints.map((point, i) => (
           <IonCard key={i} className="ion-margin-bottom">
             <IonCardHeader>
               <IonCardSubtitle>
@@ -78,7 +91,7 @@ const ResumenDeClases: React.FC<Props> = ({ courseData }) => {
       <h3 className="ion-margin-top" style={{ fontWeight: '600' }}>Cuestionario</h3>
       <Cuestionario
         isLoading={isLoading}
-        quiz={data?.quiz}
+        quiz={quizList}
       />
 
       {/* Listado de Libros */}
@@ -95,7 +108,7 @@ const ResumenDeClases: React.FC<Props> = ({ courseData }) => {
             </IonItem>
           ))
         ) : (
-          data?.recommendedBooks.map((book, i) => (
+          books.map((book, i) => (
             <IonItem key={i}>
               <IonThumbnail slot="start" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--ion-color-light)' }}>
                 <IonIcon icon={bookOutline} color="primary" />
